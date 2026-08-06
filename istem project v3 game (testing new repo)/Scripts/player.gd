@@ -91,10 +91,10 @@ var kbvelocity = Vector2.ZERO
 @export var recharge_delay: float = 1.85
 @export var sprint_threshold: float = 0.0
 #dash
-@export var dash_max: float = 75.0
+@export var dash_max: float = 25.0
 @export var dash_cost: float = 25.0
-@export var dash_recharge_per_second: float = 12.5
-@export var dash_recharge_delay: float = 1.0
+@export var dash_recharge_per_second: float = 5
+@export var dash_recharge_delay: float = 0.5
 @export var dash_speed: float = 550
 @export var dash_duration: float = 0.1
 @export var dash_bar_display_value: float = dash_max
@@ -441,6 +441,7 @@ func _physics_process(delta: float) -> void:
 			if can_bounce:
 				bouncegracetimer = 0.0
 				velocity = incomingvelocity.bounce(normal) * 1.1
+				dash_value = dash_max
 
 				if highmode:
 					highmodeduration = 2.0
@@ -825,6 +826,7 @@ func on_spear_hit(hurtbox: TemplateHurtbox) -> void:
 	var normal = -(get_global_mouse_position() - global_position).normalized()
 	var effect_normal = (global_position - hurtbox.global_position).normalized()
 	velocity = velocity.bounce(normal)
+	dash_value = dash_max
 	bouncegracetimer = 0.0
 	
 	if highmode:
