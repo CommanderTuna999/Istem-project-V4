@@ -17,7 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://dt5cs6dqupia1" path="res://Assets/Cobblestone.png" id="14_wxwew"]
 [ext_resource type="PackedScene" uid="uid://dlfil1d4hc4ke" path="res://Scenes/Enemies/crab.tscn" id="16_alh3a"]
 [ext_resource type="Script" uid="uid://b3173ry3n47c5" path="res://Scripts/level_01.gd" id="17_4q8tf"]
+[ext_resource type="PackedScene" uid="uid://vpeush0nlhjd" path="res://Scenes/Enemies/shark.tscn" id="18_8r6kd"]
 [ext_resource type="PackedScene" uid="uid://dx5181rkqvp8" path="res://Scenes/Enemies/starfish.tscn" id="18_x3xnh"]
+[ext_resource type="PackedScene" uid="uid://djkcscyv2ayrs" path="res://Scenes/Enemies/crab boss.tscn" id="20_tfod6"]
 
 [sub_resource type="Curve" id="Curve_vvhu1"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -777,21 +779,6 @@ position = Vector2(-1884.0001, 5)
 [node name="clownfish8" parent="Enemies/clownfish_folder" unique_id=1932719547 instance=ExtResource("4_kldst")]
 position = Vector2(-1904.0001, 112)
 
-[node name="clownfish9" parent="Enemies/clownfish_folder" unique_id=1250494704 instance=ExtResource("4_kldst")]
-position = Vector2(-2295, -87)
-
-[node name="clownfish6" parent="Enemies/clownfish_folder" unique_id=830032742 instance=ExtResource("4_kldst")]
-position = Vector2(-2279, -7)
-
-[node name="clownfish7" parent="Enemies/clownfish_folder" unique_id=92831704 instance=ExtResource("4_kldst")]
-position = Vector2(-2059, 150)
-
-[node name="clownfish5" parent="Enemies/clownfish_folder" unique_id=300820801 instance=ExtResource("4_kldst")]
-position = Vector2(-2128, -50)
-
-[node name="clownfish10" parent="Enemies/clownfish_folder" unique_id=2008941676 instance=ExtResource("4_kldst")]
-position = Vector2(-2125, -123)
-
 [node name="seahorse_folder" type="Node" parent="Enemies" unique_id=1487093843]
 
 [node name="seahorse" parent="Enemies/seahorse_folder" unique_id=829669778 instance=ExtResource("13_wxwew")]
@@ -829,6 +816,9 @@ position = Vector2(434.00006, -1649.0001)
 visible = false
 position = Vector2(919, -2016)
 
+[node name="shark" parent="Enemies" unique_id=1182591088 instance=ExtResource("18_8r6kd")]
+position = Vector2(-397, -437)
+
 [node name="Level01" type="Area2D" parent="." unique_id=1768724796]
 position = Vector2(375, -2127)
 collision_layer = 0
@@ -846,6 +836,9 @@ color = Color(0.6392157, 0, 0, 1)
 
 [node name="MapBlocks" type="TileMapLayer" parent="." unique_id=452952527]
 tile_set = SubResource("TileSet_rajel")
+
+[node name="clownfish" parent="." unique_id=2025178942 instance=ExtResource("20_tfod6")]
+position = Vector2(914, -1340)
 
 [connection signal="timeout" from="Player/HealDelayTimer" to="Player" method="_on_heal_delay_timer_timeout"]
 [connection signal="timeout" from="Player/HealTimer" to="Player" method="_on_heal_timer_timeout"]
