@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://dt5cs6dqupia1" path="res://Assets/Cobblestone.png" id="14_wxwew"]
 [ext_resource type="PackedScene" uid="uid://dlfil1d4hc4ke" path="res://Scenes/Enemies/crab.tscn" id="16_alh3a"]
 [ext_resource type="Script" uid="uid://b3173ry3n47c5" path="res://Scripts/level_01.gd" id="17_4q8tf"]
+[ext_resource type="PackedScene" uid="uid://vpeush0nlhjd" path="res://Scenes/Enemies/shark.tscn" id="18_8r6kd"]
 [ext_resource type="PackedScene" uid="uid://dx5181rkqvp8" path="res://Scenes/Enemies/starfish.tscn" id="18_x3xnh"]
 
 [sub_resource type="Curve" id="Curve_vvhu1"]
@@ -792,6 +793,21 @@ position = Vector2(-2128, -50)
 [node name="clownfish10" parent="Enemies/clownfish_folder" unique_id=2008941676 instance=ExtResource("4_kldst")]
 position = Vector2(-2125, -123)
 
+[node name="clownfish11" parent="Enemies/clownfish_folder" unique_id=531060659 instance=ExtResource("4_kldst")]
+position = Vector2(681, -1398)
+
+[node name="clownfish12" parent="Enemies/clownfish_folder" unique_id=737623234 instance=ExtResource("4_kldst")]
+position = Vector2(681, -1398)
+
+[node name="clownfish13" parent="Enemies/clownfish_folder" unique_id=1496890757 instance=ExtResource("4_kldst")]
+position = Vector2(681, -1398)
+
+[node name="clownfish14" parent="Enemies/clownfish_folder" unique_id=948524593 instance=ExtResource("4_kldst")]
+position = Vector2(681, -1398)
+
+[node name="clownfish15" parent="Enemies/clownfish_folder" unique_id=295529771 instance=ExtResource("4_kldst")]
+position = Vector2(681, -1398)
+
 [node name="seahorse_folder" type="Node" parent="Enemies" unique_id=1487093843]
 
 [node name="seahorse" parent="Enemies/seahorse_folder" unique_id=829669778 instance=ExtResource("13_wxwew")]
@@ -828,6 +844,9 @@ position = Vector2(434.00006, -1649.0001)
 [node name="starfish4" parent="Enemies/starfish_folder" unique_id=853676229 instance=ExtResource("18_x3xnh")]
 visible = false
 position = Vector2(919, -2016)
+
+[node name="shark" parent="Enemies" unique_id=1182591088 instance=ExtResource("18_8r6kd")]
+position = Vector2(-397, -437)
 
 [node name="Level01" type="Area2D" parent="." unique_id=1768724796]
 position = Vector2(375, -2127)

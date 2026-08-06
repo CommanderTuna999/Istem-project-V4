@@ -6,7 +6,7 @@
 #Layer 5 = Weapon
 #Layer 6 = EnemyProjectile collision
 #Layer 11 = Enemies hurtbox
-#test
+
 extends CharacterBody2D
 var harpooning = false
 var currentharpoon = null
