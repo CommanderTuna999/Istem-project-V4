@@ -32,7 +32,7 @@ var maxspeed:
 	get: 
 		return 250 * total_speed_increase
 var highmode = false
-var highmodeduration = 2.0
+var highmodeduration = 0.5
 #var highmodespeedcap = 1740
 var highmodespeedcap = 900
 var highmodedrag = 150
@@ -45,7 +45,7 @@ var harpoon_target: Node2D = null
 var harpoon_local_point = Vector2.ZERO
 
 var normaldragaccel = 350
-var harpoondragaccel = 300
+var harpoondragaccel = 150
 var harpooncatchduration: float = 0.2
 var harpooncatchpullaccel: float = 150.0
 var harpooncatchtimer: float = 0.0
@@ -162,8 +162,11 @@ func _on_harpoon_attached(hitposition, hitbody):
 	harpoon_local_point = harpoon_target.to_local(hitposition)
 	
 	harpoonrestlength = global_position.distance_to(harpoon_point)
-	var maxextention = harpoonrestlength * maxstretchratio
-	maxropelength = harpoonrestlength * maxextention
+
+	maxropelength = harpoonrestlength * maxstretchratio
+
+	var maxextention = maxropelength - harpoonrestlength
+
 	slingshotstretchthreshold = maxextention * chargeratio
 	$HarpoonLine.points = [
 	Vector2.ZERO,
@@ -173,14 +176,10 @@ func _on_harpoon_attached(hitposition, hitbody):
 	currentharpoon = null
 	
 	harpooning = true
-	if highmode:
-		harpooncatchtimer = 0.0
-		harpoonpullactive = true
-		harpoonlaunchtimer = 0.0
-	else:
-		harpooncatchtimer = harpooncatchduration
-		harpoonpullactive = false
-		harpoonlaunchtimer = 0.0
+
+	harpooncatchtimer = harpooncatchduration
+	harpoonpullactive = false
+	harpoonlaunchtimer = 0.0
 	
 func _physics_process(delta: float) -> void:
 	if velocity.length() > 500:
@@ -226,7 +225,7 @@ func _physics_process(delta: float) -> void:
 			highmode = false
 			$SuperMovementBubbles.emitting = false
 			$SuperMovementTrails.emitting = false
-			highmodeduration = 2.0
+			highmodeduration = 0.5
 	else:
 		$SuperMovementBubbles.emitting = false
 		$SuperMovementTrails.emitting = false
@@ -286,6 +285,11 @@ func _physics_process(delta: float) -> void:
 		get_parent().add_child(harpoon)
 		currentharpoon = harpoon
 	if Input.is_action_just_released("Harpoon"):
+		if ropecharged:
+			highmode = true
+			highmodeduration = 0.5
+			start_highmode_flash()
+
 		pivoting = false
 		harpoonhit = false
 		ropecharged = false
@@ -410,9 +414,9 @@ func _physics_process(delta: float) -> void:
 			velocity += sidewaysdirection * sidewaysinput * turnaccel * delta
 		
 		var distancetopoint = global_position.distance_to(harpoon_point)
-		if distancetopoint > maxropelength:
-			global_position = harpoon_point + (global_position - harpoon_point).normalized() * maxropelength
-			distancetopoint = maxropelength
+		#if distancetopoint > maxropelength:
+			#global_position = harpoon_point + (global_position - harpoon_point).normalized() * maxropelength
+			#distancetopoint = maxropelength
 		var stretch = max(distancetopoint - harpoonrestlength, 0)
 		
 		var currentpullaccel = clamp(minimumpullaccel + stretch * springstrength, minimumpullaccel, maximumpullaccel)
@@ -427,8 +431,6 @@ func _physics_process(delta: float) -> void:
 		var overstretched = stretch >= slingshotstretchthreshold
 		if overstretched and not wasoverstretched:
 			ropecharged = true
-			highmode = true
-			start_highmode_flash()
 			chargetimer = chargeduration
 			currentharpoonmaxspeed = chargedharpoonspeed
 			
@@ -486,7 +488,7 @@ func _physics_process(delta: float) -> void:
 				dash_value = dash_max
 
 				if highmode:
-					highmodeduration = 2.0
+					highmodeduration = 0.5
 					play_parry_effect(collision.get_position(), collision.get_normal())
 				else:
 					$ParryBubbles.global_position = collision.get_position()
@@ -872,7 +874,7 @@ func on_spear_hit(hurtbox: TemplateHurtbox) -> void:
 	bouncegracetimer = 0.0
 	
 	if highmode:
-		highmodeduration = 2.0
+		highmodeduration = 0.5
 		play_parry_effect(hurtbox.global_position, effect_normal)
 	else:
 		$ParryBubbles.global_position = hurtbox.global_position
