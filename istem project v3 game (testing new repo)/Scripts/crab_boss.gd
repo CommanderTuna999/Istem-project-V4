@@ -5,7 +5,8 @@
 #Layer 11 = Enemies hurtbox
 
 extends CharacterBody2D
-var speed = 185
+var dash_speed = 2000
+var dashing = false
 var damage_occuring = false
 var aggro = false
 var chase_subject = null
@@ -23,11 +24,6 @@ var kbvelocity = Vector2.ZERO
 func _ready() -> void:
 		animated_sprite_2d.play("idle")
 func _process(_delta): #x axis flipping for now
-	
-	if not chase_subject == null and chase_subject.position.x > position.x:
-		animated_sprite_2d.flip_h = true
-	elif not chase_subject == null and chase_subject.position.x < position.x:
-		animated_sprite_2d.flip_h = false
 	
 	
 	if current_health <= 0:
@@ -52,6 +48,11 @@ func _physics_process(_delta):
 		choose_attack(attack_number)
 		print("returning")
 		attack_timer.start()
+	
+	if dashing:
+		move_and_slide()
+		return
+		
 
 func choose_attack(number):
 	if currently_attacking == true:
@@ -64,7 +65,7 @@ func choose_attack(number):
 		if number == 4:
 			jump()
 		
-		currently_attacking = false
+		
 
 func sweep():
 	print("sweep")
@@ -79,7 +80,19 @@ func smash():
 
 
 func dash():
+	print(rotation_degrees)
 	print("dash")
+	print(chase_subject)
+	var player_pos = chase_subject.global_position
+	dashing = true
+	look_at(player_pos)
+	await get_tree().create_timer(2).timeout
+	rotation_degrees = 0.0
+	velocity = (player_pos - global_position).normalized() * 700
+	await get_tree().create_timer(1).timeout
+	velocity = Vector2.ZERO
+	currently_attacking = false
+	
 	
 #damage script below
 func take_damage(amount: int):

@@ -265,7 +265,6 @@ label_settings = SubResource("LabelSettings_dkfv3")
 metadata/_custom_type_script = "uid://bxuajbif0gs0l"
 
 [node name="attack timer" type="Timer" parent="." unique_id=899226516]
-wait_time = 5.0
 one_shot = true
 
 [connection signal="body_entered" from="aggro_area" to="." method="_on_aggro_area_body_entered"]

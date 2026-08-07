@@ -8,7 +8,12 @@
 [ext_resource type="Script" uid="uid://cjstsrn0kl0mb" path="res://Scripts/canvaslayer_popups.gd" id="5_g8eo0"]
 [ext_resource type="Texture2D" uid="uid://bmrtlnac8wc08" path="res://Assets/Health_bar.png" id="6_nnuef"]
 [ext_resource type="Script" uid="uid://ffyg2qo1fclc" path="res://Scripts/armour_level_label.gd" id="7_fcb2x"]
+[ext_resource type="PackedScene" uid="uid://djkcscyv2ayrs" path="res://Scenes/Enemies/crab boss.tscn" id="10_penfe"]
+[ext_resource type="PackedScene" uid="uid://blb2pf33p5wbr" path="res://Scenes/Enemies/seahorse.tscn" id="11_ptkrl"]
+[ext_resource type="PackedScene" uid="uid://ony1pqjkvd1j" path="res://Scenes/Enemies/clownfish.tscn" id="12_n2m85"]
 [ext_resource type="Texture2D" uid="uid://dd8auqqsx1etd" path="res://Assets/Placeholderbgv2.png" id="13_osdef"]
+[ext_resource type="PackedScene" uid="uid://dlfil1d4hc4ke" path="res://Scenes/Enemies/crab.tscn" id="13_yjbb4"]
+[ext_resource type="PackedScene" uid="uid://vpeush0nlhjd" path="res://Scenes/Enemies/shark.tscn" id="14_g8eo0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pw4n1"]
 texture = ExtResource("1_0h1yu")
@@ -830,9 +835,62 @@ process_material = SubResource("ParticleProcessMaterial_f8buc")
 
 [node name="clownfish_folder" type="Node" parent="Enemies" unique_id=1781396354]
 
+[node name="clownfish" parent="Enemies/clownfish_folder" unique_id=643314090 instance=ExtResource("12_n2m85")]
+position = Vector2(1870, -630)
+
+[node name="clownfish2" parent="Enemies/clownfish_folder" unique_id=704893880 instance=ExtResource("12_n2m85")]
+position = Vector2(2360, -220)
+
+[node name="clownfish3" parent="Enemies/clownfish_folder" unique_id=182614916 instance=ExtResource("12_n2m85")]
+position = Vector2(2023, -507)
+
+[node name="clownfish4" parent="Enemies/clownfish_folder" unique_id=1272652105 instance=ExtResource("12_n2m85")]
+position = Vector2(2062, -660)
+
+[node name="clownfish5" parent="Enemies/clownfish_folder" unique_id=2006996072 instance=ExtResource("12_n2m85")]
+position = Vector2(2228, -486)
+
+[node name="clownfish6" parent="Enemies/clownfish_folder" unique_id=379619173 instance=ExtResource("12_n2m85")]
+position = Vector2(2350, -359)
+
+[node name="clownfish7" parent="Enemies/clownfish_folder" unique_id=778546091 instance=ExtResource("12_n2m85")]
+position = Vector2(1795, -746)
+
+[node name="clownfish8" parent="Enemies/clownfish_folder" unique_id=507357986 instance=ExtResource("12_n2m85")]
+position = Vector2(1969, -683)
+
+[node name="clownfish9" parent="Enemies/clownfish_folder" unique_id=971117806 instance=ExtResource("12_n2m85")]
+position = Vector2(1860, -725)
+
+[node name="clownfish10" parent="Enemies/clownfish_folder" unique_id=1932197395 instance=ExtResource("12_n2m85")]
+position = Vector2(1764, -696)
+
 [node name="seahorse_folder" type="Node" parent="Enemies" unique_id=85514349]
 
+[node name="seahorse" parent="Enemies/seahorse_folder" unique_id=80576515 instance=ExtResource("11_ptkrl")]
+position = Vector2(2794, 110)
+
+[node name="seahorse2" parent="Enemies/seahorse_folder" unique_id=1267172209 instance=ExtResource("11_ptkrl")]
+position = Vector2(3026, -146)
+
 [node name="crab_folder" type="Node" parent="Enemies" unique_id=1333439632]
+
+[node name="crab" parent="Enemies/crab_folder" unique_id=232292401 instance=ExtResource("13_yjbb4")]
+position = Vector2(3541, 99)
+
+[node name="crab2" parent="Enemies/crab_folder" unique_id=201529671 instance=ExtResource("13_yjbb4")]
+position = Vector2(3904, 172)
+
+[node name="crab3" parent="Enemies/crab_folder" unique_id=235593215 instance=ExtResource("13_yjbb4")]
+position = Vector2(3619, 327)
+
+[node name="shark_folder" type="Node" parent="Enemies" unique_id=67066988]
+
+[node name="shark2" parent="Enemies/shark_folder" unique_id=787447116 instance=ExtResource("14_g8eo0")]
+position = Vector2(985, -525)
+
+[node name="crab boss" parent="Enemies" unique_id=1111911240 instance=ExtResource("10_penfe")]
+position = Vector2(4625, 279)
 
 [connection signal="timeout" from="Player/HealDelayTimer" to="Player" method="_on_heal_delay_timer_timeout"]
 [connection signal="timeout" from="Player/HealTimer" to="Player" method="_on_heal_timer_timeout"]

@@ -24,7 +24,7 @@ var projectile_cooldown = 2
 
 func _ready() -> void:
 	var main = get_tree().current_scene #identifies the main game scene for projectiles
-	animated_sprite_2d.play("idle")
+	animated_sprite_2d.play("pregnant")
 func _process(_delta): #x axis flipping for now
 	if not chase_subject == null and chase_subject.position.x > position.x:
 		animated_sprite_2d.flip_h = true
@@ -45,7 +45,6 @@ func _process(_delta): #x axis flipping for now
 func _on_aggro_area_body_entered(body):
 	chase_subject = body
 	aggro = true
-	animated_sprite_2d.play("aggro")
 	print('entered')
 	
 	
@@ -75,6 +74,7 @@ func take_damage(amount: int):
 	animation_player.play("damaged")
 	await get_tree().create_timer(0.1).timeout
 	if current_health == 3:
+		animated_sprite_2d.play("deflated")
 		spawn_child(25)
 	
 
