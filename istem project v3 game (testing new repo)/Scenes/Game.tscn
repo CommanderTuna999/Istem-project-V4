@@ -652,10 +652,10 @@ offset_right = 424.0
 offset_bottom = 1781.0
 
 [node name="dashbar" type="ProgressBar" parent="UI/CanvasLayer" unique_id=2025877455]
-offset_left = 25.0
-offset_top = 177.0
-offset_right = 141.0
-offset_bottom = 622.0
+offset_left = 90.0
+offset_top = 230.0
+offset_right = 185.0
+offset_bottom = 435.0
 fill_mode = 3
 
 [node name="Panel" type="Panel" parent="UI/CanvasLayer" unique_id=855191754]
@@ -707,10 +707,10 @@ vertical_alignment = 1
 script = ExtResource("4_71axn")
 
 [node name="ShieldBar" type="ProgressBar" parent="UI/CanvasLayer" unique_id=1227095526]
-offset_left = 93.0
-offset_top = 179.0
-offset_right = 467.0
-offset_bottom = 206.0
+offset_left = 86.0
+offset_top = 170.0
+offset_right = 460.0
+offset_bottom = 197.0
 scale = Vector2(1, 1.0400048)
 theme_override_styles/fill = SubResource("StyleBoxFlat_alh3a")
 
