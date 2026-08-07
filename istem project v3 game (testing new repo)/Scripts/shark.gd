@@ -16,8 +16,8 @@ var current_health = 10
 var kbtime = 0.0
 var kbvelocity = Vector2.ZERO
 	
-func _ready() -> void:
-		animated_sprite_2d.play("idle")
+#func _ready() -> void:
+#		animated_sprite_2d.play("idle")
 func _process(_delta): #x axis flipping for now
 	
 	if not chase_subject == null and chase_subject.position.x > position.x:
