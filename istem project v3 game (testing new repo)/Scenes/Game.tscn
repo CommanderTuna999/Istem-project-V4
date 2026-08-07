@@ -15,9 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://dd8auqqsx1etd" path="res://Assets/Placeholderbgv2.png" id="13_3cx6b"]
 [ext_resource type="PackedScene" uid="uid://blb2pf33p5wbr" path="res://Scenes/Enemies/seahorse.tscn" id="13_wxwew"]
 [ext_resource type="Texture2D" uid="uid://dt5cs6dqupia1" path="res://Assets/Cobblestone.png" id="14_wxwew"]
-[ext_resource type="PackedScene" uid="uid://dlfil1d4hc4ke" path="res://Scenes/Enemies/crab.tscn" id="16_alh3a"]
 [ext_resource type="Script" uid="uid://b3173ry3n47c5" path="res://Scripts/level_01.gd" id="17_4q8tf"]
-[ext_resource type="PackedScene" uid="uid://vpeush0nlhjd" path="res://Scenes/Enemies/shark.tscn" id="18_8r6kd"]
 [ext_resource type="PackedScene" uid="uid://dx5181rkqvp8" path="res://Scenes/Enemies/starfish.tscn" id="18_x3xnh"]
 [ext_resource type="PackedScene" uid="uid://djkcscyv2ayrs" path="res://Scenes/Enemies/crab boss.tscn" id="20_tfod6"]
 
@@ -786,38 +784,19 @@ position = Vector2(-3228.0002, -894.99994)
 
 [node name="crab_folder" type="Node" parent="Enemies" unique_id=577862657]
 
-[node name="crab" parent="Enemies/crab_folder" unique_id=1510451570 instance=ExtResource("16_alh3a")]
-position = Vector2(377, 1092.9996)
-
-[node name="crab2" parent="Enemies/crab_folder" unique_id=491867794 instance=ExtResource("16_alh3a")]
-position = Vector2(699.99994, 920.99976)
-
-[node name="crab3" parent="Enemies/crab_folder" unique_id=1235932857 instance=ExtResource("16_alh3a")]
-position = Vector2(929, 867.99963)
-
-[node name="crab4" parent="Enemies/crab_folder" unique_id=1473156979 instance=ExtResource("16_alh3a")]
-position = Vector2(1274, 738.99976)
-
 [node name="starfish_folder" type="Node" parent="Enemies" unique_id=850621657]
 
 [node name="starfish" parent="Enemies/starfish_folder" unique_id=1746702460 instance=ExtResource("18_x3xnh")]
-visible = false
 position = Vector2(630, -1800)
 
 [node name="starfish2" parent="Enemies/starfish_folder" unique_id=2084567052 instance=ExtResource("18_x3xnh")]
-visible = false
 position = Vector2(991, -1669)
 
 [node name="starfish3" parent="Enemies/starfish_folder" unique_id=2140997949 instance=ExtResource("18_x3xnh")]
-visible = false
 position = Vector2(434.00006, -1649.0001)
 
 [node name="starfish4" parent="Enemies/starfish_folder" unique_id=853676229 instance=ExtResource("18_x3xnh")]
-visible = false
 position = Vector2(919, -2016)
-
-[node name="shark" parent="Enemies" unique_id=1182591088 instance=ExtResource("18_8r6kd")]
-position = Vector2(-397, -437)
 
 [node name="Level01" type="Area2D" parent="." unique_id=1768724796]
 position = Vector2(375, -2127)
