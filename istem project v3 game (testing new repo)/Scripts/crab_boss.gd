@@ -80,12 +80,11 @@ func smash():
 
 
 func dash():
+	dashing = true
 	print(rotation_degrees)
 	print("dash")
 	print(chase_subject)
 	var player_pos = chase_subject.global_position
-	dashing = true
-	look_at(player_pos)
 	await get_tree().create_timer(2).timeout
 	rotation_degrees = 0.0
 	velocity = (player_pos - global_position).normalized() * 700
