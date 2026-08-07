@@ -11,7 +11,8 @@ extends CharacterBody2D
 var harpooning = false
 var currentharpoon = null
 var harpoon_point = Vector2.ZERO
-var turnaccel = 725
+#var turnaccel = 725
+var turnaccel = 1500
 var accel = 360
 var pivoting = false
 var pivot_hit = false
@@ -45,12 +46,18 @@ var harpoon_local_point = Vector2.ZERO
 
 var normaldragaccel = 350
 var harpoondragaccel = 300
+var harpooncatchduration: float = 0.2
+var harpooncatchpullaccel: float = 150.0
+var harpooncatchtimer: float = 0.0
+var harpoonpullactive: bool = false
+var harpoonlaunchduration: float = 1
+var harpoonlaunchtimer: float = 0.0
 
 #spring tether
 var harpoonrestlength = 70
 var springstrength = 6
 var harpoonhit = false
-var minimumpullaccel = 600
+var minimumpullaccel = 1500
 var maximumpullaccel = 3000
 var normalharpoonmaxspeed: float =  600
 var slingshotstretchthreshold = 600
@@ -149,10 +156,7 @@ func _ready() -> void:
 
 func _on_harpoon_attached(hitposition, hitbody):
 	wasattachedthisshot = true
-	harpooning = true
-	
 	harpoonhit = true
-	
 	harpoon_point = hitposition
 	harpoon_target = hitbody
 	harpoon_local_point = harpoon_target.to_local(hitposition)
@@ -167,6 +171,16 @@ func _on_harpoon_attached(hitposition, hitbody):
 		]
 	$HarpoonLine.visible = true
 	currentharpoon = null
+	
+	harpooning = true
+	if highmode:
+		harpooncatchtimer = 0.0
+		harpoonpullactive = true
+		harpoonlaunchtimer = 0.0
+	else:
+		harpooncatchtimer = harpooncatchduration
+		harpoonpullactive = false
+		harpoonlaunchtimer = 0.0
 	
 func _physics_process(delta: float) -> void:
 	if velocity.length() > 500:
@@ -279,6 +293,9 @@ func _physics_process(delta: float) -> void:
 		wasoverstretched = false
 		currentharpoonmaxspeed = normalharpoonmaxspeed
 		harpooning = false
+		harpooncatchtimer = 0.0
+		harpoonlaunchtimer = 0.0
+		harpoonpullactive = false
 		$HarpoonLine.visible = false
 		if wasattachedthisshot == true:
 			#momentumboosttime = 0.1
@@ -338,13 +355,16 @@ func _physics_process(delta: float) -> void:
 		#currentaccel *= sprint_accel_multiplier
 		
 	if direction:
-		if velocity.length() == 0 or direction.dot(velocity) > 0:
-			velocity += direction * currentaccel * delta
-		else: 
-			velocity += direction * turnaccel * delta
-			
-		#if not harpooning and momentumboosttime <= 0:
-			#velocity = velocity.limit_length(maxspeed)
+		var movementinputallowed = harpoonlaunchtimer <= 0.0
+
+		if movementinputallowed and not (harpooning and harpooncatchtimer > 0.0):
+			if velocity.length() == 0 or direction.dot(velocity) > 0:
+				velocity += direction * currentaccel * delta
+			else: 
+				velocity += direction * turnaccel * delta
+				
+			#if not harpooning and momentumboosttime <= 0:
+				#velocity = velocity.limit_length(maxspeed)
 	
 			
 	else:
@@ -370,7 +390,25 @@ func _physics_process(delta: float) -> void:
 			)
 		
 	if harpooning:
+		if harpooncatchtimer > 0.0:
+			harpooncatchtimer -= delta
+
+			if harpooncatchtimer <= 0.0:
+				harpooncatchtimer = 0.0
+				harpoonpullactive = true
+				if not highmode:
+					harpoonlaunchtimer = harpoonlaunchduration
+		if harpoonlaunchtimer > 0.0:
+			harpoonlaunchtimer -= delta
+					
 		var direction_to_point = (harpoon_point - global_position).normalized()
+		
+		var sidewaysdirection = direction_to_point.orthogonal()
+		
+		if harpooncatchtimer > 0.0 and direction != Vector2.ZERO:
+			var sidewaysinput = direction.dot(sidewaysdirection)
+			velocity += sidewaysdirection * sidewaysinput * turnaccel * delta
+		
 		var distancetopoint = global_position.distance_to(harpoon_point)
 		if distancetopoint > maxropelength:
 			global_position = harpoon_point + (global_position - harpoon_point).normalized() * maxropelength
@@ -378,6 +416,10 @@ func _physics_process(delta: float) -> void:
 		var stretch = max(distancetopoint - harpoonrestlength, 0)
 		
 		var currentpullaccel = clamp(minimumpullaccel + stretch * springstrength, minimumpullaccel, maximumpullaccel)
+		
+		# Brief weak pull allows the player to pivot before the rope fully catches.
+		if not harpoonpullactive:
+			currentpullaccel = harpooncatchpullaccel
 		
 		velocity += (direction_to_point * currentpullaccel * delta)
 
