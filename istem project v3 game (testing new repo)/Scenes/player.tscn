@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cn64o6ycguwvc" path="res://Scripts/player.gd" id="1_v0iea"]
 [ext_resource type="PackedScene" uid="uid://bhk0tr1pyxfv" path="res://Scenes/harpoon_projectile.tscn" id="2_cvnsp"]
+[ext_resource type="Texture2D" uid="uid://bjddxyp8stb25" path="res://Assets/mc idle spritesheet.png" id="4_fkybt"]
 [ext_resource type="Script" uid="uid://bxuajbif0gs0l" path="res://damage_number_template.gd" id="4_vgqql"]
 [ext_resource type="Texture2D" uid="uid://bb2catpjqpd7i" path="res://Assets/Main_character_v2.png" id="5_fkybt"]
 
@@ -9,11 +10,39 @@
 atlas = ExtResource("5_fkybt")
 region = Rect2(0, 0, 39, 46)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_x3wgy"]
+atlas = ExtResource("4_fkybt")
+region = Rect2(459, 0, 459, 503)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3smsa"]
+atlas = ExtResource("4_fkybt")
+region = Rect2(918, 0, 459, 503)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8erm5"]
+atlas = ExtResource("4_fkybt")
+region = Rect2(1377, 0, 459, 503)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1ek2"]
+atlas = ExtResource("4_fkybt")
+region = Rect2(0, 0, 459, 503)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_igrcy"]
 animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vgqql")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x3wgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3smsa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8erm5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1ek2")
 }],
 "loop": true,
 "name": &"default",
@@ -41,7 +70,7 @@ harpoonprojectilescene = ExtResource("2_cvnsp")
 position = Vector2(1.1920929e-07, -2.9802322e-08)
 sprite_frames = SubResource("SpriteFrames_igrcy")
 autoplay = "default"
-frame_progress = 0.045549456
+frame_progress = 0.708018
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1047626844]
 position = Vector2(0.39228663, 4.7683716e-07)
