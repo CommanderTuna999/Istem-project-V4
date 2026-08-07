@@ -9,12 +9,15 @@ var speed = 185
 var damage_occuring = false
 var aggro = false
 var chase_subject = null
+var currently_attacking = false
+var attack_number = null
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-var current_health = 2
+var current_health = 200
 var kbtime = 0.0
 var kbvelocity = Vector2.ZERO
 @onready var damage_number_template: damage_number_template = $damage_number_template
+@onready var attack_timer: Timer = $"attack timer"
 
 	
 func _ready() -> void:
@@ -39,28 +42,44 @@ func _on_aggro_area_body_entered(body):
 	
 	
 	
-func _on_aggro_area_body_exited(_body: Node2D) -> void:
-	chase_subject = null
-	aggro = false
-	animated_sprite_2d.play("idle")
-	print("exited")
 
 
 
 func _physics_process(_delta):
-	if kbtime > 0:
-		kbtime 	-= _delta
-		velocity = kbvelocity
-	else:
-		if aggro and chase_subject:
-			velocity = (chase_subject.global_position - global_position).normalized() * speed
+	if chase_subject and attack_timer.is_stopped():
+		attack_number = randi_range(1, 4)
+		currently_attacking = true
+		choose_attack(attack_number)
+		print("returning")
+		attack_timer.start()
 
-		else: 
-			velocity = Vector2.ZERO
+func choose_attack(number):
+	if currently_attacking == true:
+		if number == 1:
+			dash()
+		if number == 2:
+			smash()
+		if number == 3:
+			sweep()
+		if number == 4:
+			jump()
+		
+		currently_attacking = false
 
+func sweep():
+	print("sweep")
+
+
+func jump():
+	print("jump")
 	
-	move_and_slide()
-	
+
+func smash():
+	print("smash")
+
+
+func dash():
+	print("dash")
 	
 #damage script below
 func take_damage(amount: int):
@@ -71,17 +90,6 @@ func take_damage(amount: int):
 	
 
 # knockback script below
-func take_kb(source_position: Vector2):
-	var kbdirection = (global_position - source_position).normalized()
-	kbvelocity = kbdirection * 600
-	kbtime = 0.12
-#func _on_template_hurtbox_area_entered(area: Area2D) -> void:
-	#var kbdirection = (global_position - area.global_position).normalized()
-	#kbvelocity = kbdirection * 600
-	#kbtime = 0.12
-
-
-
 
 
 	
