@@ -32,7 +32,7 @@ var maxspeed:
 	get: 
 		return 250 * total_speed_increase
 var highmode = false
-var highmodeduration = 0.5
+var highmodeduration = 1
 #var highmodespeedcap = 1740
 var highmodespeedcap = 900
 var highmodedrag = 150
@@ -71,7 +71,7 @@ var currentharpoonmaxspeed: float = normalharpoonmaxspeed
 var maxropelength = 0.0
 
 #defines absolute max extention
-var maxstretchratio = 0.6
+var maxstretchratio = 1.5
 #defines how far through extention does charge activate
 var chargeratio = 0.75
 
@@ -86,17 +86,12 @@ var kbtime = 0.0
 var kbvelocity = Vector2.ZERO
 @export var harpoonprojectilescene: PackedScene
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-#sprint
-#@onready var sprint_bar: ProgressBar = get_tree().current_scene.find_child("sprintbar", true, false) as ProgressBar
+
 @onready var dash_bar: ProgressBar = get_tree().current_scene.find_child("dashbar", true, false) as ProgressBar
 @onready var shield_bar = get_tree().current_scene.get_node("UI/CanvasLayer/ShieldBar")
-@export var sprint_multiplier: float = 1.45
-@export var sprint_max: float = 100.0
-@export var sprint_consumption_per_second: float = 25.0
 @export var recharge_per_second: float = 20.0
 @export var exhausted_recharge_per_second: float = 10.0
 @export var recharge_delay: float = 1.85
-@export var sprint_threshold: float = 0.0
 #dash
 @export var dash_max: float = 25.0
 @export var dash_cost: float = 25.0
@@ -112,11 +107,8 @@ var is_dashing: bool = false
 var dash_timer: float = 0.0
 var dash_direction: Vector2 = Vector2.ZERO
 
-var sprint_value: float = sprint_max
-var recharge_timer: float = 0.0
-var is_sprinting: bool = false
-var is_exhausted: bool = false
 
+var recharge_timer: float = 0.0
 #test armour
 var armour_DoT: bool = false
 var DoT_strength: float = 0.2 + (armour_DoT_level * 0.05)
@@ -136,11 +128,6 @@ func _ready() -> void:
 	update_shield_bar()
 	$HarpoonLine.visible = false
 	$HarpoonLine.width = 1
-	#if sprint_bar:
-		#sprint_bar.min_value = 0
-		#sprint_bar.max_value = sprint_max
-		#sprint_bar.value = sprint_value
-		#sprint_bar.show_percentage = false
 	if dash_bar:
 		dash_bar.min_value = 0
 		dash_bar.max_value = dash_max
@@ -218,14 +205,14 @@ func _physics_process(delta: float) -> void:
 			$SuperMovementBubbles.emitting = false
 			$SuperMovementTrails.emitting = false
 
-		if not is_dashing:
+		if not is_dashing and not harpooning:
 			highmodeduration -= delta
 
 		if highmodeduration <= 0.0:
 			highmode = false
 			$SuperMovementBubbles.emitting = false
 			$SuperMovementTrails.emitting = false
-			highmodeduration = 0.5
+			highmodeduration = 1
 	else:
 		$SuperMovementBubbles.emitting = false
 		$SuperMovementTrails.emitting = false
@@ -267,7 +254,6 @@ func _physics_process(delta: float) -> void:
 		$HarpoonLine.visible = false
 
 	var direction = Input.get_vector("Left", "Right", "Up", "Down")
-	#handle_sprint(delta, direction)
 	handle_dash(delta, direction)
 	#if not is_on_floor():
 		#velocity += get_gravity() * delta
@@ -287,7 +273,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_released("Harpoon"):
 		if ropecharged:
 			highmode = true
-			highmodeduration = 0.5
+			highmodeduration = 1
 			start_highmode_flash()
 
 		pivoting = false
@@ -308,35 +294,6 @@ func _physics_process(delta: float) -> void:
 		if currentharpoon != null:
 			currentharpoon.queue_free()
 			currentharpoon = null
-		#if $HarpoonRaycast.is_colliding():
-			#harpooning = true
-			#harpoon_point = $HarpoonRaycast.get_collision_point()
-			#$HarpoonLine.visible = true
-#
-	#if Input.is_action_just_released("Harpoon"):
-		#harpooning = false
-		#$HarpoonLine.visible = false
-
-	#workingscript  if harpooning:
-		#var direction_to_point = (harpoon_point - global_position).normalized()
-		#velocity += direction_to_point * harpoon_pull_accel
-		#velocity = velocity.limit_length(maxharpoonspeed)
-#
-		#$HarpoonLine.points = [
-			#Vector2.ZERO,
-			#to_local(harpoon_point)
-		#]
-	#else:
-	#if not is_dashing:
-		#if direction:
-			#if velocity.length() == 0 or direction.dot(velocity) > 0:
-				#velocity += direction * currentaccel
-		#else: 
-			#velocity += direction * turnaccel
-	#else:
-		#velocity = velocity.move_toward(Vector2.ZERO, currentaccel)
-#
-	#move_and_slide()
 	var currentaccel = accel
 
 	#sprite flipping stuff below
@@ -353,18 +310,19 @@ func _physics_process(delta: float) -> void:
 	var currentmaxspeed = maxspeed
 	if highmode:
 		currentmaxspeed = highmodespeedcap
-	
-	#if is_sprinting:
-		#currentmaxspeed *= sprint_multiplier
-		#currentaccel *= sprint_accel_multiplier
+
 		
 	if direction:
 		var movementinputallowed = harpoonlaunchtimer <= 0.0
 
 		if movementinputallowed and not (harpooning and harpooncatchtimer > 0.0):
-			if velocity.length() == 0 or direction.dot(velocity) > 0:
+			var movementdot = direction.dot(velocity.normalized()) if velocity.length() > 0 else 1.0
+
+			if highmode and movementdot < -0.7:
+				pass
+			elif velocity.length() == 0 or movementdot > 0:
 				velocity += direction * currentaccel * delta
-			else: 
+			else:
 				velocity += direction * turnaccel * delta
 				
 			#if not harpooning and momentumboosttime <= 0:
@@ -470,7 +428,6 @@ func _physics_process(delta: float) -> void:
 		can_bounce = false
 	var incomingvelocity := velocity
 	move_and_slide()
-	#update_sprint_bar()
 	update_dash_bar(delta)
 	
 
@@ -488,7 +445,7 @@ func _physics_process(delta: float) -> void:
 				dash_value = dash_max
 
 				if highmode:
-					highmodeduration = 0.5
+					highmodeduration = 1
 					play_parry_effect(collision.get_position(), collision.get_normal())
 				else:
 					$ParryBubbles.global_position = collision.get_position()
@@ -629,61 +586,7 @@ var crab_damage = 45
 var starfish_damage = 15
 
 	
-#sprint stuff below
-#func handle_sprint(delta: float, direction: Vector2) -> void:
-	#var wants_to_sprint = Input.is_action_pressed("Shift")
-	#var is_moving = direction.length() > 0.0
-#
-	#is_sprinting = false
-#
-	#if wants_to_sprint and is_moving and not harpooning and can_sprint():
-		#is_sprinting = true
-		#recharge_timer = recharge_delay
-#
-		#sprint_value -= sprint_consumption_per_second * delta
-		#sprint_value = max(sprint_value, 0.0)
-#
-		#if sprint_value < sprint_threshold:
-			#is_exhausted = true
-			#is_sprinting = false
-	#else:
-		#if recharge_timer > 0.0:
-			#recharge_timer -= delta
-		#else:
-			#recharge_sprint(delta)
-#
-#
-#func can_sprint() -> bool:
-	#if is_exhausted:
-		#return false
-#
-	#if sprint_value <= 0.0:
-		#return false
-#
-	#return true
-#
-#
-#func recharge_sprint(delta: float) -> void:
-	#if sprint_value >= sprint_max:
-		#sprint_value = sprint_max
-		#is_exhausted = false
-		#return
-#
-	#var recharge_rate = recharge_per_second
-#
-	#if is_exhausted:
-		#recharge_rate = exhausted_recharge_per_second
-#
-	#sprint_value += recharge_rate * delta
-	#sprint_value = min(sprint_value, sprint_max)
-#
-	#if sprint_value >= sprint_max:
-		#is_exhausted = false
-#
-#
-#func update_sprint_bar() -> void:
-	#if sprint_bar:
-		#sprint_bar.value = sprint_value
+
 
 func _process(delta):
 	handle_health_regen(delta)
@@ -874,7 +777,7 @@ func on_spear_hit(hurtbox: TemplateHurtbox) -> void:
 	bouncegracetimer = 0.0
 	
 	if highmode:
-		highmodeduration = 0.5
+		highmodeduration = 1
 		play_parry_effect(hurtbox.global_position, effect_normal)
 	else:
 		$ParryBubbles.global_position = hurtbox.global_position
