@@ -486,6 +486,28 @@ sources/4 = SubResource("TileSetAtlasSource_pti6k")
 
 [sub_resource type="TileSet" id="TileSet_rajel"]
 
+[sub_resource type="Shader" id="Shader_tfod6"]
+code = "shader_type canvas_item;
+
+// Grab whatever is currently being rendered to the viewport window behind this rect
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+
+void fragment() {
+    // Get the authentic color of the pixel on screen
+    vec4 pixel_color = texture(screen_texture, SCREEN_UV);
+    
+    // Apply standard luminosity weights to compute grayscale matching human brightness perception
+    float grayscale = (pixel_color.r * 0.299) + (pixel_color.g * 0.587) + (pixel_color.b * 0.114);
+    
+    // Output the gray shade while maintaining the alpha channel intact
+    COLOR = vec4(vec3(grayscale), pixel_color.a);
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rajel"]
+shader = SubResource("Shader_tfod6")
+
 [node name="Game" type="Node2D" unique_id=1539891490]
 
 [node name="Player" parent="." unique_id=982439447 instance=ExtResource("1_gl6un")]
@@ -826,6 +848,18 @@ script = ExtResource("19_tfod6")
 
 [node name="TimeStop" type="Node" parent="AbilityFolder" unique_id=38716945]
 script = ExtResource("20_rajel")
+
+[node name="TimeStopFilter" type="CanvasLayer" parent="." unique_id=191647140]
+layer = 100
+
+[node name="ColorRect" type="ColorRect" parent="TimeStopFilter" unique_id=157102569]
+visible = false
+material = SubResource("ShaderMaterial_rajel")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="timeout" from="Player/HealDelayTimer" to="Player" method="_on_heal_delay_timer_timeout"]
 [connection signal="timeout" from="Player/HealTimer" to="Player" method="_on_heal_timer_timeout"]

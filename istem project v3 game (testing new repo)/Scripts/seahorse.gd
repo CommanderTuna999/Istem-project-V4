@@ -3,6 +3,7 @@
 #Layer 2 = Walls
 #Layer 3 = HarpoonProjectile
 #Layer 11 = Enemies hurtbox
+#Layer 100 = Time Stop Filter (intented)
 
 extends CharacterBody2D
 @onready var projectile = preload("res://Scenes/Enemies/seahorse_projectile.tscn")
@@ -83,6 +84,8 @@ func take_damage(amount: int):
 	
 
 func spawn_child(amount):
+	if TimeStop.time_stop_active == true:
+		return
 	for i in range(amount):
 		var main = get_tree().current_scene #identifies the main game scene for projectiles, ik its already done on ready but it must be declared again to be used in this function so yeah
 		var instance = child.instantiate()
@@ -101,6 +104,8 @@ func take_kb(source_position: Vector2):
 	#kbvelocity = kbdirection * 600
 	#kbtime = 0.12
 func _shoot():
+	if TimeStop.time_stop_active == true:
+		return
 	var main = get_tree().current_scene #identifies the main game scene for projectiles, ik its already done on ready but it must be declared again to be used in this function so yeah
 	var instance = projectile.instantiate()
 	instance.dir = (chase_subject.global_position - global_position).normalized()
