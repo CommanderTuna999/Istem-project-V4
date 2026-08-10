@@ -17,8 +17,9 @@ var direction = 1
 
 
 func _process(_delta):
-
-
+	if TimeStop.time_stop_active == true:
+		return
+	
 	if current_health <= 0:
 		queue_free()
 	

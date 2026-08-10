@@ -572,7 +572,7 @@ var defence:
 		return 10 * total_defence_increase
 var total_defence_increase = 1.0
 
-var current_health = 1000
+@export var current_health = 1000
 var damage_occuring = false
 var iframe_duration = 0.9
 var starsaveused = false
@@ -811,15 +811,20 @@ func _on_heal_delay_timer_timeout() -> void:
 
 
 func _on_heal_timer_timeout() -> void:
-	if can_heal and current_health < max_health:
-		current_health += heal_per_second
-		current_health = min(current_health, max_health)
+	if TimeStop.time_stop_active == false:
+		if can_heal and current_health < max_health:
+			current_health += heal_per_second
+			current_health = min(current_health, max_health)
 
 
 func _on_shield_recharge_delay_timeout() -> void:
+	if TimeStop.time_stop_active == true:
+		return
 	shield_can_recharge = true
 
 func _on_shield_recharge_timer_timeout() -> void:
+	if TimeStop.time_stop_active == true:
+		return
 	if !shield_can_recharge:
 		return
 	if current_health < max_health:
@@ -827,7 +832,8 @@ func _on_shield_recharge_timer_timeout() -> void:
 	if shield_health >= shield_max_health:
 		return
 	if shield_can_recharge:
-		shield_health += shield_max_health * shield_recharge
-		shield_health = min(shield_health, shield_max_health)
-		update_shield_bar()
+		if TimeStop.time_stop_active == false:
+			shield_health += shield_max_health * shield_recharge
+			shield_health = min(shield_health, shield_max_health)
+			update_shield_bar()
 	
