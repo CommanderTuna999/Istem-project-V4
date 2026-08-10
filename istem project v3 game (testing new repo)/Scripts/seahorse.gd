@@ -26,6 +26,8 @@ func _ready() -> void:
 	var main = get_tree().current_scene #identifies the main game scene for projectiles
 	animated_sprite_2d.play("pregnant")
 func _process(_delta): #x axis flipping for now
+	if TimeStop.time_stop_active == true:
+		pass
 	if not chase_subject == null and chase_subject.position.x > position.x:
 		animated_sprite_2d.flip_h = true
 	elif not chase_subject == null and chase_subject.position.x < position.x:
@@ -56,6 +58,8 @@ func _on_aggro_area_body_exited(_body: Node2D) -> void:
 	print("exited")
 	
 func _physics_process(_delta):
+	if TimeStop.time_stop_active == true:
+		pass
 	if aggro and chase_subject:
 		if global_position.distance_to(chase_subject.global_position) > 400:
 			velocity = (chase_subject.global_position - global_position).normalized() * speed

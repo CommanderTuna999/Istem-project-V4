@@ -22,7 +22,8 @@ var separationstrength = 80.0
 func _ready() -> void:
 		animated_sprite_2d.play("idle")
 func _process(_delta): #x axis flipping for now
-	
+	if TimeStop.time_stop_active == true:
+		pass
 	if not chase_subject == null and chase_subject.position.x > position.x:
 		animated_sprite_2d.flip_h = true
 	elif not chase_subject == null and chase_subject.position.x < position.x:
@@ -50,6 +51,8 @@ func _on_aggro_area_body_exited(_body: Node2D) -> void:
 
 
 func _physics_process(_delta):
+	if TimeStop.time_stop_active == true:
+		pass
 	if kbtime > 0:
 		kbtime 	-= _delta
 		velocity = kbvelocity

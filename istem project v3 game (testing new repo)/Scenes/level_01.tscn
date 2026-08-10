@@ -742,10 +742,10 @@ offset_right = 424.0
 offset_bottom = 1781.0
 
 [node name="dashbar" type="ProgressBar" parent="UI/CanvasLayer" unique_id=1182946789]
-offset_left = 25.0
-offset_top = 177.0
-offset_right = 141.0
-offset_bottom = 622.0
+offset_left = 64.0
+offset_top = 183.0
+offset_right = 114.0
+offset_bottom = 359.0
 fill_mode = 3
 
 [node name="Panel" type="Panel" parent="UI/CanvasLayer" unique_id=1383580875]
@@ -797,10 +797,10 @@ vertical_alignment = 1
 script = ExtResource("7_fcb2x")
 
 [node name="ShieldBar" type="ProgressBar" parent="UI/CanvasLayer" unique_id=177239078]
-offset_left = 93.0
-offset_top = 179.0
-offset_right = 467.0
-offset_bottom = 206.0
+offset_left = 62.0
+offset_top = 135.0
+offset_right = 377.0
+offset_bottom = 162.0
 scale = Vector2(1, 1.0400048)
 theme_override_styles/fill = SubResource("StyleBoxFlat_ue7jx")
 
@@ -838,7 +838,7 @@ process_material = SubResource("ParticleProcessMaterial_f8buc")
 [node name="shark_folder" type="Node" parent="Enemies" unique_id=67066988]
 
 [node name="crab boss" parent="Enemies" unique_id=1111911240 instance=ExtResource("10_penfe")]
-position = Vector2(567, -2391)
+position = Vector2(9179, -1309)
 
 [connection signal="timeout" from="Player/HealDelayTimer" to="Player" method="_on_heal_delay_timer_timeout"]
 [connection signal="timeout" from="Player/HealTimer" to="Player" method="_on_heal_timer_timeout"]
