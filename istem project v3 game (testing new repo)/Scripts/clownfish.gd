@@ -23,7 +23,7 @@ func _ready() -> void:
 		animated_sprite_2d.play("idle")
 func _process(_delta): #x axis flipping for now
 	if TimeStop.time_stop_active == true:
-		pass
+		return
 	if not chase_subject == null and chase_subject.position.x > position.x:
 		animated_sprite_2d.flip_h = true
 	elif not chase_subject == null and chase_subject.position.x < position.x:
@@ -35,6 +35,8 @@ func _process(_delta): #x axis flipping for now
 		
 		
 func _on_aggro_area_body_entered(body):
+	if TimeStop.time_stop_active == true:
+		return
 	chase_subject = body
 	aggro = true
 	animated_sprite_2d.play("aggro")
@@ -43,6 +45,8 @@ func _on_aggro_area_body_entered(body):
 	
 	
 func _on_aggro_area_body_exited(_body: Node2D) -> void:
+	if TimeStop.time_stop_active == true:
+		return
 	chase_subject = null
 	aggro = false
 	animated_sprite_2d.play("idle")
@@ -52,7 +56,7 @@ func _on_aggro_area_body_exited(_body: Node2D) -> void:
 
 func _physics_process(_delta):
 	if TimeStop.time_stop_active == true:
-		pass
+		return
 	if kbtime > 0:
 		kbtime 	-= _delta
 		velocity = kbvelocity
@@ -84,6 +88,8 @@ func take_damage(amount: int):
 
 # knockback script below
 func take_kb(source_position: Vector2):
+	if TimeStop.time_stop_active == true:
+		return
 	var kbdirection = (global_position - source_position).normalized()
 	kbvelocity = kbdirection * 600
 	kbtime = 0.12

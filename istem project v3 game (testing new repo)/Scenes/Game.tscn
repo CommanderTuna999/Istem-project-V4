@@ -819,7 +819,7 @@ color = Color(0.6392157, 0, 0, 1)
 tile_set = SubResource("TileSet_rajel")
 
 [node name="clownfish" parent="." unique_id=2025178942 instance=ExtResource("20_tfod6")]
-position = Vector2(892, -1340)
+position = Vector2(929, -1317)
 
 [node name="AbilityFolder" type="Node" parent="." unique_id=770505327]
 script = ExtResource("19_tfod6")

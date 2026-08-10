@@ -31,6 +31,8 @@ func _process(_delta): #x axis flipping for now
 		
 		
 func _on_aggro_area_body_entered(body):
+	if TimeStop.time_stop_active == true:
+		return
 	chase_subject = body
 	aggro = true
 	animated_sprite_2d.play("aggro")
@@ -42,6 +44,8 @@ func _on_aggro_area_body_entered(body):
 
 
 func _physics_process(_delta):
+	if TimeStop.time_stop_active == true:
+		return
 	if chase_subject and attack_timer.is_stopped():
 		attack_number = randi_range(1, 4)
 		currently_attacking = true
@@ -55,6 +59,8 @@ func _physics_process(_delta):
 		
 
 func choose_attack(number):
+	if TimeStop.time_stop_active == true:
+		return
 	if currently_attacking == true:
 		if number == 1:
 			dash()
