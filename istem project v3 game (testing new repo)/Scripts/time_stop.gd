@@ -15,7 +15,7 @@ func activate_time_stop() -> void:
 	time_stop_cooldown = true
 	print("Time Stop is active.")
 	get_node("/root/Game/TimeStopFilter/ColorRect").visible = true
-	player.current_health *= 0.5
+	player.current_health *= 0.71
 	await get_tree().create_timer(6.0).timeout
 	get_node("/root/Game/TimeStopFilter/ColorRect").visible = false
 	time_stop_active = false
